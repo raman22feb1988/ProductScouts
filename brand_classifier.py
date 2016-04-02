@@ -15,6 +15,9 @@ import matplotlib.pyplot as plt
 from operator import itemgetter
 from ggplot import *
 import warnings
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
 from sklearn.neighbors import KNeighborsClassifier
 
 warnings.filterwarnings('ignore')
@@ -44,9 +47,14 @@ print(categories.size)
 brands=product_data['brand_id'].unique()
 print(brands.size)
 
-
-
-
+# sample_text="120GB Hard Disk Drive with 3 Years Warranty for Lenovo Essential B570 Laptop Notebook HDD Computer - Certified 3 Years Warranty from Seifelden"
+sample_text="Sony VAIO VPC-CA4S1E/W 14.0"" LCD LED Screen Display Panel WXGA HD Slim	415 CANON USA IMAGECLASS D550 - MULTIFUNCTION - MONOCHROME - LASER - PRINT, COPY, SCAN - UP TO 4509B061AA	274 Monoprice 104234 MPI Dell Color Laser 3010CN - Black with Chip	3 Dell Ultrabook XPS 12 Compatible Laptop Power DC Adapter Car Charger	658 ProCurve Switch 4208vl U.S ProCurve Networking 6H - J8773A#ABA	437 Dell PowerEdge R710 - 1 x X5650 - 16GB - 5 x 600GB 10K	248"
+text=word_tokenize(sample_text)
+print(nltk.pos_tag(text))
+tagged_text=pos_tag(sample_text.split())
+print(tagged_text)
+print(nltk.ne_chunk(tagged_text, binary=True))
+print(nltk.ne_chunk(tagged_text))
 
 sys.exit()
 
