@@ -169,9 +169,9 @@ print("Removed the Duplicates....")
 # sample_text="Sony VAIO VPC-CA4S1E/W 14.0"" LCD LED Screen Display Panel WXGA HD Slim	415 CANON USA IMAGECLASS D550 - MULTIFUNCTION - MONOCHROME - LASER - PRINT, COPY, SCAN - UP TO 4509B061AA	274 Monoprice 104234 MPI Dell Color Laser 3010CN - Black with Chip	3 Dell Ultrabook XPS 12 Compatible Laptop Power DC Adapter Car Charger	658 ProCurve Switch 4208vl U.S ProCurve Networking 6H - J8773A#ABA	437 Dell PowerEdge R710 - 1 x X5650 - 16GB - 5 x 600GB 10K	248"
 catalog_of_products=[]
 # train=product_data
-sampled_data,sample_test=train_test_split(product_data,train_size=1)
+# sampled_data,sample_test=train_test_split(product_data,train_size=1)
 # train,test=train_test_split(sampled_data,train_size=0.5)
-train=sampled_data
+train=product_data
 count=0
 expected_brands=train['brand_id']
 actual_brands=[]
@@ -195,6 +195,11 @@ accuracy=sumv/float(len(actual_brands))
 
 
 print("Accuracy: {accuracy} for these {n} records".format(accuracy=accuracy,n=len(actual_brands)))
+
+print("Writing output to File")
+with open("a.txt", 'w') as f:
+    for s in actual_brands:
+        f.write(str(s) + '\n')
 
 # print(run_rules("sandisk okk"))    	
 # # print(output.ORGANIZATION)

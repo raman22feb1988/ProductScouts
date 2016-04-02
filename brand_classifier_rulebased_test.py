@@ -69,6 +69,10 @@ def run_rules(product_title,product_category):
 		return 35099
 	elif((re.match("^cisco",product_title,re.IGNORECASE)) and (re.match("/^(?!compatible)/",product_title,re.IGNORECASE))):
 		return 28720
+	elif((re.search("animal",product_title,re.IGNORECASE)) and ((re.search("customized",product_title,re.IGNORECASE)) or (re.search("designed",product_title,re.IGNORECASE)) or (re.search("cool",product_title,re.IGNORECASE)))):
+		return 17005
+	elif(((re.search("tie",product_title)) and (product_category==466)) or (re.search("multiple colors",product_title,re.IGNORECASE)) or (re.search("nextdia",product_title,re.IGNORECASE))):
+		return 43042
 	elif(re.search("belkin",product_title,re.IGNORECASE)):
 		return 15557
 	elif(re.search("product category",product_title,re.IGNORECASE)):
@@ -119,7 +123,7 @@ def run_rules(product_title,product_category):
 		return 18573
 	elif(re.search("cellet",product_title,re.IGNORECASE)):
 		return 23480
-	elif(re.search("mouse pad computer mousepad",product_title,re.IGNORECASE)):
+	elif(re.search("mouse pad",product_title,re.IGNORECASE)):
 		return 37334
 	elif(re.search("fincibo",product_title,re.IGNORECASE)):
 		return 18156
@@ -129,7 +133,7 @@ def run_rules(product_title,product_category):
 																
 	
 	
-	return 42835		
+	return 4229		
 
 	# HP Rule
 	# try:
