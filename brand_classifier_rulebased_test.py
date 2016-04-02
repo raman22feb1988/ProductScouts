@@ -71,6 +71,8 @@ def run_rules(product_title,product_category):
 		return 28720
 	elif((re.search("animal",product_title,re.IGNORECASE)) and ((re.search("customized",product_title,re.IGNORECASE)) or (re.search("designed",product_title,re.IGNORECASE)) or (re.search("cool",product_title,re.IGNORECASE)))):
 		return 17005
+	elif((re.search("animal",product_title,re.IGNORECASE)) and ((re.search("protection",product_title,re.IGNORECASE)) )):
+		return 44466
 	elif(((re.search("tie",product_title)) and (product_category==466)) or (re.search("multiple colors",product_title,re.IGNORECASE)) or (re.search("nextdia",product_title,re.IGNORECASE))):
 		return 43042
 	elif(re.search("belkin",product_title,re.IGNORECASE)):
@@ -99,6 +101,10 @@ def run_rules(product_title,product_category):
 		return 21076
 	elif(re.search("Seifelden",product_title,re.IGNORECASE)):
 		return 3950
+	elif(re.search("mouse pad computer mousepad",product_title,re.IGNORECASE)):
+		return 37334
+	elif(re.search("mouse pad",product_title,re.IGNORECASE)):
+		return 41873	
 	elif(re.match("^sony vaio",product_title,re.IGNORECASE)):
 		return 35585
 	elif(re.search("replacement laptop keyboard",product_title,re.IGNORECASE)):
@@ -111,6 +117,8 @@ def run_rules(product_title,product_category):
 		return 4380
 	elif(re.match("^xerox",product_title,re.IGNORECASE)):
 		return 36778
+	elif(re.search("design protective decal skin sticker",product_title,re.IGNORECASE)):
+		return 1498
 	elif((re.match("^FORD",product_title,re.IGNORECASE)) and (re.search("computer module ECM ECU",product_title,re.IGNORECASE))) :
 		return 3570
 	elif(re.search("skinit skin",product_title,re.IGNORECASE)):
@@ -123,12 +131,15 @@ def run_rules(product_title,product_category):
 		return 18573
 	elif(re.search("cellet",product_title,re.IGNORECASE)):
 		return 23480
-	elif(re.search("mouse pad",product_title,re.IGNORECASE)):
-		return 37334
 	elif(re.search("fincibo",product_title,re.IGNORECASE)):
 		return 18156
 	elif(re.match("^westerdigital|WD",product_title,re.IGNORECASE)):
-		return 8329											
+		return 8329
+	elif((re.match("^apple",product_title,re.IGNORECASE)) and ((re.match("/^(?!by)/",product_title,re.IGNORECASE)) or (re.match("/^(?!for)/",product_title,re.IGNORECASE)))):
+		return 36043
+	elif((re.search("skinguardz",product_title,re.IGNORECASE))):
+		return 22028
+
 		
 																
 	
