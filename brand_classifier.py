@@ -18,17 +18,31 @@ import warnings
 from sklearn.neighbors import KNeighborsClassifier
 
 warnings.filterwarnings('ignore')
+np.set_printoptions(threshold='nan')
 
 def get_data(filename,header_labels):
 	data=pd.read_table(filename,header=None,names=header_labels)
 	return data
 
 
+def align_datattypes(product_data):
+	data_copy=product_data.copy()
+	for row in data_copy:
+		temp_category=row['category']
+		row['category']=row['category'].tostr
+	return data_copy	
+
 product_headers=['product_title','brand_id','category']
 
 #Data Preprocessing
 product_data=get_data("classification_train.tsv",product_headers)
-print(product_data)
+product_data['category']=np.array(product_data['category'],dtype=np.str_)
+product_data['brand_id']=np.array(product_data['brand_id'],dtype=np.str_)
+
+categories=product_data['category'].unique()
+print(categories.size)
+brands=product_data['brand_id'].unique()
+print(brands.size)
 
 
 
