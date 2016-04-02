@@ -38,8 +38,16 @@ def find_catalog(product_name,catalog_of_products):
 	return temp_catalog	
 
 
-def run_rules(product_title):
-	if(re.match("^decal|matte",product_title,re.IGNORECASE)):
+def run_rules(product_title,product_category):
+	if((re.match("^HP|hewlett",product_title,re.IGNORECASE)) and (re.match("/^(?!screen)/",product_title,re.IGNORECASE))):
+		return 42835
+	elif(re.match("^dell",product_title,re.IGNORECASE)):
+		return 42383	
+	elif(re.search("generic",product_title,re.IGNORECASE)):
+		return 6584
+	elif(((re.search("card",product_title,re.IGNORECASE)) or (re.search("adapter",product_title,re.IGNORECASE))) and (product_category==618)):
+		return 19709
+	elif(re.match("^decal|matte",product_title,re.IGNORECASE)):
 		return 26992
 	elif(re.match("^sandisk",product_title,re.IGNORECASE)):
 		return 30503
@@ -52,14 +60,76 @@ def run_rules(product_title):
 	elif(re.match("^first2savvv",product_title,re.IGNORECASE)):
 		return 31194
 	elif(re.match("^zectron",product_title,re.IGNORECASE)):
-		return 11544								
-	if((re.search("card",product_title)) or (re.search("adapter",product_title,re.IGNORECASE))):
-		return 11580
-	if((re.search("generic",product_title)) or (re.search("for",product_title)) or (re.search("Generic",product_title)) ):
-		return 6584
-	elif(re.search("HP",product_title)):
-		return 42935
-	return 45688		
+		return 11544
+	elif(re.match("^sodo",product_title,re.IGNORECASE)):
+		return 21244
+	elif(re.match("^hp-compaq",product_title,re.IGNORECASE)):
+		return 4684
+	elif((re.match("^thosiba",product_title,re.IGNORECASE)) and (re.search("card",product_title,re.IGNORECASE))):
+		return 35099
+	elif((re.match("^cisco",product_title,re.IGNORECASE)) and (re.match("/^(?!compatible)/",product_title,re.IGNORECASE))):
+		return 28720
+	elif(re.search("belkin",product_title,re.IGNORECASE)):
+		return 15557
+	elif(re.search("product category",product_title,re.IGNORECASE)):
+		return 42503		
+	elif((re.match("^acer",product_title,re.IGNORECASE)) and (re.match("/^(?!for)/",product_title,re.IGNORECASE))):
+		return 2989	
+	elif(re.match("^startech",product_title,re.IGNORECASE)):
+		return 4684
+	elif(re.match("^tripp",product_title,re.IGNORECASE)):
+		return 13325
+	elif(re.match("^lenovo",product_title,re.IGNORECASE)):
+		return 37923
+	elif(re.match("^3drose",product_title,re.IGNORECASE)):
+		return 45087
+	elif(re.search("superb choice",product_title,re.IGNORECASE)):
+		return 34996
+	elif(re.match("^samsung",product_title,re.IGNORECASE)):
+		return 9381
+	elif(re.match("^asus",product_title,re.IGNORECASE)):
+		return 33613
+	elif(re.match("^lexmark",product_title,re.IGNORECASE)):
+		return 13357
+	elif(re.match("^intel",product_title,re.IGNORECASE)):
+		return 21076
+	elif(re.search("Seifelden",product_title,re.IGNORECASE)):
+		return 3950
+	elif(re.match("^sony vaio",product_title,re.IGNORECASE)):
+		return 35585
+	elif(re.search("replacement laptop keyboard",product_title,re.IGNORECASE)):
+		return 42587
+	elif(re.match("^canon",product_title,re.IGNORECASE)):
+		return 43043
+	elif(re.match("^epson",product_title,re.IGNORECASE)):
+		return 28653
+	elif(re.search("roocase",product_title,re.IGNORECASE)):
+		return 4380
+	elif(re.match("^xerox",product_title,re.IGNORECASE)):
+		return 36778
+	elif((re.match("^FORD",product_title,re.IGNORECASE)) and (re.search("computer module ECM ECU",product_title,re.IGNORECASE))) :
+		return 3570
+	elif(re.search("skinit skin",product_title,re.IGNORECASE)):
+		return 17116
+	elif(re.search("crest coat",product_title,re.IGNORECASE)):
+		return 20607
+	elif(re.search("mightyskins",product_title,re.IGNORECASE)):
+		return 3406
+	elif(re.search("boxwave",product_title,re.IGNORECASE)):
+		return 18573
+	elif(re.search("cellet",product_title,re.IGNORECASE)):
+		return 23480
+	elif(re.search("mouse pad computer mousepad",product_title,re.IGNORECASE)):
+		return 37334
+	elif(re.search("fincibo",product_title,re.IGNORECASE)):
+		return 18156
+	elif(re.match("^westerdigital|WD",product_title,re.IGNORECASE)):
+		return 8329											
+		
+																
+	
+	
+	return 42835		
 
 	# HP Rule
 	# try:
@@ -99,35 +169,34 @@ print("Removed the Duplicates....")
 # sample_text="Sony VAIO VPC-CA4S1E/W 14.0"" LCD LED Screen Display Panel WXGA HD Slim	415 CANON USA IMAGECLASS D550 - MULTIFUNCTION - MONOCHROME - LASER - PRINT, COPY, SCAN - UP TO 4509B061AA	274 Monoprice 104234 MPI Dell Color Laser 3010CN - Black with Chip	3 Dell Ultrabook XPS 12 Compatible Laptop Power DC Adapter Car Charger	658 ProCurve Switch 4208vl U.S ProCurve Networking 6H - J8773A#ABA	437 Dell PowerEdge R710 - 1 x X5650 - 16GB - 5 x 600GB 10K	248"
 catalog_of_products=[]
 # train=product_data
-sampled_data,sample_test=train_test_split(product_data,train_size=0.5)
-train,test=train_test_split(sampled_data,train_size=0.1)
+sampled_data,sample_test=train_test_split(product_data,train_size=1)
+# train,test=train_test_split(sampled_data,train_size=0.5)
+train=sampled_data
 count=0
 expected_brands=train['brand_id']
 actual_brands=[]
 already_seen_brands=[]
-# for i in range(len(expected_brands)):
-# 	current_brand_id=train.iloc[i]['brand_id']
-# 	out=run_rules(train.iloc[i]['product_title'])
-# 	print("Title:{t}:Count{a} output{o}".format(t=train.iloc[i]['product_title'],a=count,o=out))
-# 	actual_brands.append(out)
-# 	count=count+1
-# 	# print(count)
+for i in range(len(expected_brands)):
+	current_brand_id=train.iloc[i]['brand_id']
+	out=run_rules(train.iloc[i]['product_title'],train.iloc[i]['category'])
+	print("Title:{t}:Count{a} output{o}".format(t=train.iloc[i]['product_title'],a=count,o=out))
+	actual_brands.append(out)
+	count=count+1
+	# print(count)
 
 
-# sumv=0
-# for values in actual_brands:
-# 	if values in expected_brands:
-# 		sumv=sumv+1;
+sumv=0
+for values in actual_brands:
+	if values in expected_brands:
+		sumv=sumv+1;
 	
 
-# accuracy1=sumv/float(len(actual_brands))
+accuracy=sumv/float(len(actual_brands))
 
-# print(accuracy1)
-# accuracy=np.where(actual_brands==expected_brands,1,0).sum()/float(len(actual_brands))
 
-# print("Accuracy: {accuracy}".format(accuracy=accuracy))
+print("Accuracy: {accuracy} for these {n} records".format(accuracy=accuracy,n=len(actual_brands)))
 
-print(run_rules("sandisk okk"))    	
+# print(run_rules("sandisk okk"))    	
 # # print(output.ORGANIZATION)
 # print(catalog_of_products)
 sys.exit()
