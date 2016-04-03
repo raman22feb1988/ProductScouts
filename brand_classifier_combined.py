@@ -173,9 +173,10 @@ for i in range(len(expected_brands)):
 	out=run_rules(train.iloc[i]['product_title'],train.iloc[i]['category'])
 	print("Count{a} ".format(a=count))
 	# train['boosting_feature'].append(out)
+	actual_brands.append(out)
 	count=count+1
 	
-train['boosting_feature']=out
+train['boosting_feature']=actual_brands
 end_time=time()-start_time
 
 
@@ -195,8 +196,9 @@ print("Training Completed in {0} seconds".format(time()-start_time))
 test_product_data=get_data(testing_filename,testing_product_headers)
 test_product_data['category']=np.array(test_product_data['category'],dtype=np.str_)
 test=test_product_data
+# test,test2=train_test_split(test_product_data,train_size=0.001)
 expected_brands=test['product_title']
-actual_brands=[]
+test_actual_brands=[]
 already_seen_brands=[]
 start_time=time()
 count=0
@@ -204,9 +206,10 @@ for i in range(len(expected_brands)):
 	out=run_rules(test.iloc[i]['product_title'],test.iloc[i]['category'])
 	print("Count{a} ".format(a=count))
 	# test['boosting_feature'].append(out)
+	test_actual_brands.append(out)
 	count=count+1
 
-test['boosting_feature']=out
+test['boosting_feature']=test_actual_brands
 
 test_features=[]
 test_features.append(test.columns[1])
@@ -215,19 +218,31 @@ testX=test[test_features]
 
 print("Testing Started...")
 start_time=time()
-predictions=clf.predict(testX)
+predictions=[]
+for i in range(len(expected_brands)):
+	testX=test.iloc[i][test_features]
+	predictions.append(clf.predict(testX))
+
+
+
+
 print("Testing Completed in {0} seconds".format(time()-start_time))
 	
 
 # # accuracy=sumv/float(len(actual_brands))
-print("Completed in {n} seconds for {k} records".format(n=end_time,k=len(expected_brands)))
+# print("Completed in {n} seconds for {k} records".format(n=end_time,k=len(expected_brands)))
 
 # # print("Accuracy: {accuracy} for these {n} records".format(accuracy=accuracy,n=len(actual_brands)))
 
 print("Writing output to File")
-with open("output"+str(time())+".txt", 'w') as f:
+with open("output_dt"+str(time())+".txt", 'w') as f:
     for s in predictions:
         f.write(str(s) + '\n')
+
+print("Writing output to File")
+with open("output_normal"+str(time())+".txt", 'w') as f:
+    for s in test_actual_brands:
+        f.write(str(s) + '\n')        
 
 # print(run_rules("sandisk okk"))    	
 # # print(output.ORGANIZATION)
