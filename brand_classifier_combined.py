@@ -40,6 +40,7 @@ def get_data(filename,header_labels):
 # 	return temp_catalog	
 
 def find_odd_brands():
+	# This data set is built using the R script attached to the Repo
 	c={'cid':42835
 	,'0':34209
 	,'1':1
@@ -654,11 +655,13 @@ def find_odd_brands():
 	return c
 
 def run_rules(product_title,product_category,odd_brands):
-	if((re.match("^HP|hewlett",product_title,re.IGNORECASE)) and (re.match("/^(?!screen)/",product_title,re.IGNORECASE))):
+	if(re.match("^hp-compaq",product_title,re.IGNORECASE)):
+		return 4684
+	elif((re.match("^HP|hewlett",product_title,re.IGNORECASE)) and (re.match("/^(?!screen)/",product_title,re.IGNORECASE))):
 		return 42835
 	elif(re.match("^dell",product_title,re.IGNORECASE)):
 		return 42383	
-	elif(re.search("generic",product_title,re.IGNORECASE)):
+	elif(re.compile("\generic$",re.IGNORECASE).search(product_title)):
 		return 6584
 	elif(((re.search("card",product_title,re.IGNORECASE)) or (re.search("adapter",product_title,re.IGNORECASE))) and (product_category==618)):
 		return 19709
@@ -678,8 +681,6 @@ def run_rules(product_title,product_category,odd_brands):
 		return 11544
 	elif(re.match("^sodo",product_title,re.IGNORECASE)):
 		return 21244
-	elif(re.match("^hp-compaq",product_title,re.IGNORECASE)):
-		return 4684
 	elif((re.match("^thosiba",product_title,re.IGNORECASE)) and (re.search("card",product_title,re.IGNORECASE))):
 		return 35099
 	elif((re.match("^cisco",product_title,re.IGNORECASE)) and (re.match("/^(?!compatible)/",product_title,re.IGNORECASE))):
@@ -781,6 +782,7 @@ train_product_data['category']=np.array(train_product_data['category'],dtype=np.
 train=train_product_data
 odd_brands=find_odd_brands()
 # train,test=train_test_split(train_product_data,train_size=0.001)
+print("Started Processsing....")
 count=0
 expected_brands=train['product_title']
 actual_brands=[]
@@ -788,7 +790,7 @@ already_seen_brands=[]
 start_time=time()
 for i in range(len(expected_brands)):
 	out=run_rules(train.iloc[i]['product_title'],train.iloc[i]['category'],odd_brands)
-	print("Count{a} ".format(a=count))
+	# print("Count{a} ".format(a=count))
 	# train['boosting_feature'].append(out)
 	actual_brands.append(out)
 	count=count+1
@@ -824,7 +826,7 @@ start_time=time()
 count=0
 for i in range(len(expected_brands)):
 	out=run_rules(test.iloc[i]['product_title'],test.iloc[i]['category'],odd_brands)
-	print("Count{a} ".format(a=count))
+	# print("Count{a} ".format(a=count))
 	# test['boosting_feature'].append(out)
 	test_actual_brands.append(out)
 	count=count+1
@@ -859,14 +861,9 @@ with open("output_dt"+str(time())+".txt", 'w') as f:
     for s in predictions:
         f.write(str(s) + '\n')
 
-print("Writing output to File")
-with open("output_normal"+str(time())+".txt", 'w') as f:
-    for s in test_actual_brands:
-        f.write(str(s) + '\n')        
+     
 
-# print(run_rules("sandisk okk"))    	
-# # print(output.ORGANIZATION)
-# print(catalog_of_products)
+
 sys.exit()
 
 
