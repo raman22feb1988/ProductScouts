@@ -806,10 +806,10 @@ train_features.append(train.columns[3])
 X=train[train_features]
 Y=train['brand_id']
 
-# clf=DecisionTreeClassifier(min_samples_split= 2, max_leaf_nodes= 60, criterion= 'entropy', max_depth= None, min_samples_leaf= 1) #With Optimum Hyper Parameters
+clf=DecisionTreeClassifier(min_samples_split= 2, criterion= 'entropy', max_depth= None, min_samples_leaf= 1) #With Optimum Hyper Parameters
 # clf.fit(X,Y)
 # clf=GaussianNB()
-clf=KNeighborsClassifier(n_neighbors=50,weights='distance')
+# clf=KNeighborsClassifier(n_neighbors=50,weights='distance')
 clf.fit(X,Y)
 print("Training Completed in {0} seconds".format(time()-start_time))
 
