@@ -148,48 +148,75 @@ def run_rules(product_title,product_category):
 
 
 
-product_headers=['product_title','category']
+training_product_headers=['product_title','brand_id','category']
+training_filename="classification_train.tsv"
 
+testing_product_headers=['product_title','category']
+testing_filename="classification_blind_set_corrected.tsv"
 
 #Data Preprocessing
-product_data=get_data("classification_blind_set_corrected.tsv",product_headers)
-
-product_data['category']=np.array(product_data['category'],dtype=np.str_)
-# product_data['brand_id']=np.array(product_data['brand_id'],dtype=np.str_)
-# product_data=product_data.drop_duplicates()
-# print("Removed the Duplicates....")
-
-# categories=product_data['category'].unique()
-# print(categories.size)
-# brands=product_data['brand_id'].unique()
-# print(brands.size)
+train_product_data=get_data(training_filename,training_product_headers)
 
 
-# sample_text="120GB Hard Disk Drive with 3 Years Warranty for Lenovo Essential B570 Laptop Notebook HDD Computer - Certified 3 Years Warranty from Seifelden"
-# sample_text="Sony VAIO VPC-CA4S1E/W 14.0"" LCD LED Screen Display Panel WXGA HD Slim	415 CANON USA IMAGECLASS D550 - MULTIFUNCTION - MONOCHROME - LASER - PRINT, COPY, SCAN - UP TO 4509B061AA	274 Monoprice 104234 MPI Dell Color Laser 3010CN - Black with Chip	3 Dell Ultrabook XPS 12 Compatible Laptop Power DC Adapter Car Charger	658 ProCurve Switch 4208vl U.S ProCurve Networking 6H - J8773A#ABA	437 Dell PowerEdge R710 - 1 x X5650 - 16GB - 5 x 600GB 10K	248"
-# catalog_of_products=[]
-train=product_data
-sampled_data,sample_test=train_test_split(product_data,train_size=1)
-train,test=train_test_split(sampled_data,train_size=0.5)
-train=product_data
+train_product_data['brand_id']=np.array(train_product_data['brand_id'],dtype=np.int32)
+train_product_data=train_product_data.drop_duplicates()
+train_product_data['category']=np.array(train_product_data['category'],dtype=np.int32)
+
+train=train_product_data
+# train,test=train_test_split(train_product_data,train_size=0.001)
 count=0
 expected_brands=train['product_title']
 actual_brands=[]
 already_seen_brands=[]
 start_time=time()
 for i in range(len(expected_brands)):
-	# current_brand_id=train.iloc[i]['brand_id']
 	out=run_rules(train.iloc[i]['product_title'],train.iloc[i]['category'])
-	print("Title:{t}:Count{a} output{o}".format(t=train.iloc[i]['product_title'],a=count,o=out))
-	actual_brands.append(out)
+	print("Count{a} ".format(a=count))
+	# train['boosting_feature'].append(out)
 	count=count+1
-	# print(count)
-
+	
+train['boosting_feature']=out
 end_time=time()-start_time
-# # sumv=0
-# # for values in actual_brands:
-# # 	if values in expected_brands:
-# # 		sumv=sumv+1;
+
+
+
+#Classification Algorithm
+train_features=[]
+train_features.append(train.columns[2])
+train_features.append(train.columns[3])
+
+X=train[train_features]
+Y=train['brand_id']
+
+clf=DecisionTreeClassifier(min_samples_split= 2, max_leaf_nodes= 60, criterion= 'entropy', max_depth= None, min_samples_leaf= 1) #With Optimum Hyper Parameters
+clf.fit(X,Y)
+print("Training Completed in {0} seconds".format(time()-start_time))
+
+test_product_data=get_data(testing_filename,testing_product_headers)
+test_product_data['category']=np.array(test_product_data['category'],dtype=np.str_)
+test=test_product_data
+expected_brands=test['product_title']
+actual_brands=[]
+already_seen_brands=[]
+start_time=time()
+count=0
+for i in range(len(expected_brands)):
+	out=run_rules(test.iloc[i]['product_title'],test.iloc[i]['category'])
+	print("Count{a} ".format(a=count))
+	# test['boosting_feature'].append(out)
+	count=count+1
+
+test['boosting_feature']=out
+
+test_features=[]
+test_features.append(test.columns[1])
+test_features.append(test.columns[2])
+testX=test[test_features]
+
+print("Testing Started...")
+start_time=time()
+predictions=clf.predict(testX)
+print("Testing Completed in {0} seconds".format(time()-start_time))
 	
 
 # # accuracy=sumv/float(len(actual_brands))
@@ -199,7 +226,7 @@ print("Completed in {n} seconds for {k} records".format(n=end_time,k=len(expecte
 
 print("Writing output to File")
 with open("output"+str(time())+".txt", 'w') as f:
-    for s in actual_brands:
+    for s in predictions:
         f.write(str(s) + '\n')
 
 # print(run_rules("sandisk okk"))    	
