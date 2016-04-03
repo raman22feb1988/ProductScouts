@@ -756,7 +756,8 @@ def run_rules(product_title,product_category,odd_brands):
 	elif((re.search("skinguardz",product_title,re.IGNORECASE))):
 		return 22028
 
-		
+	
+
 																
 	try:
 		return int(odd_brands[str(product_category)])
@@ -843,7 +844,7 @@ start_time=time()
 predictions=[]
 for i in range(len(expected_brands)):
 	testX=test.iloc[i][test_features]
-	predictions.append(clf.predict(testX))
+	predictions.append(clf.predict(testX)[0])
 
 
 
