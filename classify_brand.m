@@ -7,6 +7,7 @@ t = C(find(C(:, 1) == z(i, 1)), 2);
 if size(t, 1) > 0
 out(i, 1) = t;
 end
-disp(i);
+% disp(i);
 end
+% save('classify_brand.mat', 'out');
 end
